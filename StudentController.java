@@ -1,85 +1,87 @@
 package main;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class StudentController {
 
-    @FXML private TextField txtId;
-    @FXML private TextField txtName;
-    @FXML private TextField txtAge;
-    @FXML private TextField txtGpa;
+    @FXML private TextField txtSid;
+    @FXML private TextField txtSname;
     @FXML private TextField txtAddress;
+    @FXML private DatePicker dpDob;
+    @FXML private TextField txtNic;
+    @FXML private TextField txtCid;
     @FXML private Label lblStatus;
 
     @FXML
     private void handleAdd() {
-        String sql = "INSERT INTO Student (ID, Name, Age, GPA, Address) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Student (SID, Sname, Address, dob, NIC, CID) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, Integer.parseInt(txtId.getText()));
-            stmt.setString(2, txtName.getText());
-            stmt.setInt(3, Integer.parseInt(txtAge.getText()));
-            stmt.setDouble(4, Double.parseDouble(txtGpa.getText()));
-            stmt.setString(5, txtAddress.getText());
+            stmt.setInt(1, Integer.parseInt(txtSid.getText().trim()));
+            stmt.setString(2, txtSname.getText().trim());
+            stmt.setString(3, txtAddress.getText().trim());
+            stmt.setDate(4, Date.valueOf(dpDob.getValue()));
+            stmt.setString(5, txtNic.getText().trim());
+            stmt.setInt(6, Integer.parseInt(txtCid.getText().trim()));
 
             stmt.executeUpdate();
             lblStatus.setText("Student added successfully.");
             clearFields();
-
-        } catch (SQLException | NumberFormatException e) {
+        } catch (SQLException | NumberFormatException | NullPointerException e) {
             lblStatus.setText("Error: " + e.getMessage());
         }
     }
 
     @FXML
     private void handleUpdate() {
-        String sql = "UPDATE Student SET Name = ?, Age = ?, GPA = ?, Address = ? WHERE ID = ?";
+        String sql = "UPDATE Student SET Sname = ?, Address = ?, dob = ?, NIC = ?, CID = ? WHERE SID = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, txtName.getText());
-            stmt.setInt(2, Integer.parseInt(txtAge.getText()));
-            stmt.setDouble(3, Double.parseDouble(txtGpa.getText()));
-            stmt.setString(4, txtAddress.getText());
-            stmt.setInt(5, Integer.parseInt(txtId.getText()));
+            stmt.setString(1, txtSname.getText().trim());
+            stmt.setString(2, txtAddress.getText().trim());
+            stmt.setDate(3, Date.valueOf(dpDob.getValue()));
+            stmt.setString(4, txtNic.getText().trim());
+            stmt.setInt(5, Integer.parseInt(txtCid.getText().trim()));
+            stmt.setInt(6, Integer.parseInt(txtSid.getText().trim()));
 
             int rows = stmt.executeUpdate();
             lblStatus.setText(rows > 0 ? "Student updated." : "No student found with that ID.");
-
-        } catch (SQLException | NumberFormatException e) {
+        } catch (SQLException | NumberFormatException | NullPointerException e) {
             lblStatus.setText("Error: " + e.getMessage());
         }
     }
 
     @FXML
     private void handleDelete() {
-        String sql = "DELETE FROM Student WHERE ID = ?";
+        String sql = "DELETE FROM Student WHERE SID = ?";
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, Integer.parseInt(txtId.getText()));
+            stmt.setInt(1, Integer.parseInt(txtSid.getText().trim()));
 
             int rows = stmt.executeUpdate();
             lblStatus.setText(rows > 0 ? "Student deleted." : "No student found with that ID.");
             if (rows > 0) clearFields();
-
         } catch (SQLException | NumberFormatException e) {
             lblStatus.setText("Error: " + e.getMessage());
         }
     }
 
     private void clearFields() {
-        txtId.clear();
-        txtName.clear();
-        txtAge.clear();
-        txtGpa.clear();
+        txtSid.clear();
+        txtSname.clear();
         txtAddress.clear();
+        dpDob.setValue(null);
+        txtNic.clear();
+        txtCid.clear();
     }
 }

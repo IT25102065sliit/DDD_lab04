@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="main.OffersController"
+          hgap="10" vgap="12" alignment="CENTER">
+    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+    <Label text="Course ID (CID):" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtCid" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+    <Label text="Module Code (Mcode):" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtMcode" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+    <Label text="Academic Year:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtYear" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+    <Label text="Semester:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <TextField fx:id="txtSemester" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+    <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="1">
+        <Button text="Add Offer" onAction="#handleAdd"/>
+        <Button text="Delete Offer" onAction="#handleDelete"/>
+    </HBox>
+
+    <Label fx:id="lblStatus" GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+</GridPane>

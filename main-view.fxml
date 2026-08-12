@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+
+<TabPane xmlns:fx="http://javafx.com/fxml"
+         tabClosingPolicy="UNAVAILABLE"
+         prefWidth="650" prefHeight="500">
+    <tabs>
+        <Tab text="Students">
+            <fx:include source="student-view.fxml"/>
+        </Tab>
+        <Tab text="Courses">
+            <fx:include source="course-view.fxml"/>
+        </Tab>
+        <Tab text="Modules">
+            <fx:include source="module-view.fxml"/>
+        </Tab>
+        <Tab text="Offers">
+            <fx:include source="offers-view.fxml"/>
+        </Tab>
+    </tabs>
+</TabPane>
