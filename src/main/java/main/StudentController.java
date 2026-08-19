@@ -25,12 +25,12 @@ public class StudentController {
         try (Connection conn = Database.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, Integer.parseInt(txtSid.getText().trim()));
+            stmt.setString(1, txtSid.getText().trim());
             stmt.setString(2, txtSname.getText().trim());
             stmt.setString(3, txtAddress.getText().trim());
             stmt.setDate(4, Date.valueOf(dpDob.getValue()));
             stmt.setString(5, txtNic.getText().trim());
-            stmt.setInt(6, Integer.parseInt(txtCid.getText().trim()));
+            stmt.setString(6, txtCid.getText().trim());
 
             stmt.executeUpdate();
             lblStatus.setText("Student added successfully.");
@@ -50,8 +50,8 @@ public class StudentController {
             stmt.setString(2, txtAddress.getText().trim());
             stmt.setDate(3, Date.valueOf(dpDob.getValue()));
             stmt.setString(4, txtNic.getText().trim());
-            stmt.setInt(5, Integer.parseInt(txtCid.getText().trim()));
-            stmt.setInt(6, Integer.parseInt(txtSid.getText().trim()));
+            stmt.setString(5, txtCid.getText().trim());
+            stmt.setString(6, txtSid.getText().trim());
 
             int rows = stmt.executeUpdate();
             lblStatus.setText(rows > 0 ? "Student updated." : "No student found with that ID.");
@@ -62,19 +62,27 @@ public class StudentController {
 
     @FXML
     private void handleDelete() {
-        String sql = "DELETE FROM Student WHERE SID = ?";
-        try (Connection conn = Database.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    String sql = "DELETE FROM Student WHERE SID = ?";
 
-            stmt.setInt(1, Integer.parseInt(txtSid.getText().trim()));
+    try (Connection conn = Database.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            int rows = stmt.executeUpdate();
-            lblStatus.setText(rows > 0 ? "Student deleted." : "No student found with that ID.");
-            if (rows > 0) clearFields();
-        } catch (SQLException | NumberFormatException e) {
-            lblStatus.setText("Error: " + e.getMessage());
+        stmt.setString(1, txtSid.getText().trim());
+
+        int rows = stmt.executeUpdate();
+
+        lblStatus.setText(
+            rows > 0 ? "Student deleted." : "No student found with that ID."
+        );
+
+        if (rows > 0) {
+            clearFields();
         }
+
+    } catch (SQLException e) {
+        lblStatus.setText("Error: " + e.getMessage());
     }
+}
 
     private void clearFields() {
         txtSid.clear();
